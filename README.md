@@ -17,9 +17,8 @@ Users can add todos with a title, description, and deadline. Tasks are automatic
   * **Overdue Tasks**
   * **Today's Tasks**
   * **Upcoming Tasks**
-* 📱 Responsive UI
 * 🔐 Authentication using cookies
-* ⚡ Fast frontend with Vite
+
 
 ---
 
@@ -38,12 +37,11 @@ Users can add todos with a title, description, and deadline. Tasks are automatic
 * Node.js
 * Express.js
 * MongoDB
-* Mongoose
 * Cookie-based authentication
 
 ---
 
-# 📂 Project Structure
+#  Project Structure
 
 ```
 todo-app
@@ -53,7 +51,7 @@ todo-app
 │   ├── models
 │   ├── routes
 │   ├── middleware
-│   └── server.js
+│   └── index.js
 │
 ├── frontend
 │   ├── components
@@ -63,29 +61,22 @@ todo-app
 │   │
 │   ├── pages
 │   │   └── Dashboard.jsx
+│   │   └── Login.jsx
+│   │   └── Signup.jsx
 │   │
-│   ├── hooks
-│   │   └── useTodos.js
-│   │
-│   ├── services
-│   │   └── todoService.js
-│   │
+│   ├── context
+│   │   └── userContext.jsx
+│   │   └── userContextProvider.jsx
 │   └── main.jsx
+│   └── App.jsx
 ```
 
 ---
 
-# ⚙️ Installation
+#  Installation
 
-## 1️⃣ Clone the repository
 
-```
-git clone https://github.com/yourusername/todo-manager.git
-```
-
----
-
-## 2️⃣ Install dependencies
+##  Install dependencies
 
 ### Backend
 
@@ -103,7 +94,7 @@ npm install
 
 ---
 
-# ▶️ Run the Application
+#  Run the Application
 
 ### Start Backend
 
@@ -125,7 +116,7 @@ http://localhost:5173
 
 ---
 
-# 🌍 Environment Variables
+#  Environment Variables
 
 Create a `.env` file in the backend folder.
 
@@ -139,29 +130,3 @@ CLIENT_URL=http://localhost:5173
 ```
 
 ---
-
-# 📌 Future Improvements
-
-* 🔍 Search Todos
-* 📊 Task analytics
-* 🔔 Notifications for upcoming deadlines
-* 🌓 Dark mode
-* 📱 Mobile UI improvements
-
----
-
-# 📷 Screenshots
-
-*(Add screenshots of your application here)*
-
----
-
-# 👨‍💻 Author
-
-Developed by **Your Name**
-
----
-
-# ⭐ If you like this project
-
-Give it a **star on GitHub ⭐**
