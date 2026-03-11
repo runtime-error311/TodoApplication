@@ -66,7 +66,7 @@ function Dashboard() {
   };
 
   const handleDelete = async (id, endDate) => {
-    endDate = endDate.toISOString().split("T")[0];
+    endDate = endDate.split("T")[0];
 
     try {
       await axios.delete(VITE_API_URL + "todo/" + id, {
