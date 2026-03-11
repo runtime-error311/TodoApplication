@@ -1,7 +1,21 @@
-function AddEditTodo({mode, title,setTitle,description,setDescription,endDate,setEndDate,setIsModalOpen,handleAddTodo,saveEdit}) {
+function AddEditTodo({
+  mode,
+  title,
+  description,
+  endDate,
+  setTitle,
+  setDescription,
+  setEndDate,
+  setIsModalOpen,
+  handleSubmit
+}) {
+
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center p-4">
-      <div className="bg-white p-6 rounded-xl w-full max-w-sm">
+
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
+
+      <div className="bg-white p-6 rounded-xl w-[350px]">
+
         <h2 className="text-xl font-bold mb-4">
           {mode === "add" ? "Add Todo" : "Edit Todo"}
         </h2>
@@ -28,6 +42,7 @@ function AddEditTodo({mode, title,setTitle,description,setDescription,endDate,se
         />
 
         <div className="flex justify-end gap-3">
+
           <button
             className="bg-gray-400 px-3 py-1 rounded"
             onClick={() => setIsModalOpen(false)}
@@ -37,22 +52,19 @@ function AddEditTodo({mode, title,setTitle,description,setDescription,endDate,se
 
           <button
             className="bg-purple-500 text-white px-3 py-1 rounded"
-            onClick={() => {
-              if (mode === "add") {
-                handleAddTodo();
-              } else {
-                saveEdit();
-              }
-
-              setIsModalOpen(false);
-            }}
+            onClick={handleSubmit}
           >
             {mode === "add" ? "Add" : "Save"}
           </button>
+
         </div>
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default AddEditTodo;
