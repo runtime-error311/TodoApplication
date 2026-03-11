@@ -41,39 +41,6 @@ Users can add todos with a title, description, and deadline. Tasks are automatic
 
 ---
 
-#  Project Structure
-
-```
-todo-app
-│
-├── backend
-│   ├── controllers
-│   ├── models
-│   ├── routes
-│   ├── middleware
-│   └── index.js
-│
-├── frontend
-│   ├── components
-│   │   ├── Navbar.jsx
-│   │   ├── TodoList.jsx
-│   │   └── AddEditTodo.jsx
-│   │
-│   ├── pages
-│   │   └── Dashboard.jsx
-│   │   └── Login.jsx
-│   │   └── Signup.jsx
-│   │
-│   ├── context
-│   │   └── userContext.jsx
-│   │   └── userContextProvider.jsx
-│   └── main.jsx
-│   └── App.jsx
-```
-
----
-
-#  Installation
 
 
 ##  Install dependencies
@@ -129,4 +96,11 @@ JWT_SECRET=your_secret
 CLIENT_URL=http://localhost:5173
 ```
 
+Create a `.env` file in the frontend folder.
+
+Example:
+
+```
+VITE_API_URL=http://localhost:5000/api/v1/
+```
 ---
