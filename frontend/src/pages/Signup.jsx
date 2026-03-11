@@ -27,7 +27,7 @@ function Signup() {
         { name, email, password },
         { withCredentials: true },
       );
-      console.log(result);
+
       toast.success(result.data.message);
       setUser(result.data.data);
       setLoading(false);

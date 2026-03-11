@@ -21,7 +21,7 @@ function Login() {
         setLoading(true);
         try{
             const result = await axios.post(VITE_API_URL+'auth/login',{email,password},{withCredentials:true});
-            console.log(result);
+
             toast.success(result.data.message);
             setUser(result.data.data);
             setLoading(false);

@@ -7,7 +7,7 @@ export const createTodo = async (req,res)=>{
     try{
         const {title,description,completed,endDate} = req.body;
         const {userId} = req;
-        console.log(userId);
+        // console.log(userId);
         if(!title || !description){
             return res.status(400).json({
                 message:"All inputs are required!"
@@ -60,25 +60,24 @@ export const singleTodo = async (req,res)=>{
 export const allUserTodos = async (req,res)=>{
     try{
         const {userId} = req;
-        console.log(userId);
+
 
         const today = new Date();
         today.setHours(0,0,0,0);
         today.setDate(today.getDate()-1);
-        // console.log("today hai ",today);
+ 
         const tomorrow = new Date(today);
-        // console.log("tomorrow hai ",tomorrow);
+
         tomorrow.setDate(today.getDate() + 1);
-        // console.log("tomorrow hai ",tomorrow);
+
 
         const overdue = await Todo.find({endDate: { $lt: today },user:userId}).sort({ endDate: 1 });
         
         const todayTodos = await Todo.find({endDate: { $gte: today, $lt: tomorrow },user:userId}).sort({ endDate: 1 });
 
         const upcoming = await Todo.find({endDate: { $gte: tomorrow },user:userId}).sort({ endDate: 1 });
-        console.log("overdue hai ",overdue)
-        console.log("todayTodos hai ",todayTodos)
-        console.log("upcoming hai ",upcoming)
+
+
         res.status(200).json({
             message:"Todos found successfully",
             data:{
@@ -101,7 +100,7 @@ export const updateTodo = async (req, res) => {
       { $set: req.body },
       { new: true }
     );
-    console.log(updateTodo);
+
     if (!updatedTodo) {
       return res.status(404).json({
         message: "Todo not found"

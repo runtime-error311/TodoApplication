@@ -9,7 +9,7 @@ import UserContext from "./context/userContext";
 
 function App() {
   const {user} = useContext(UserContext);
-  console.log("hello")
+
   return (
     <>
     <Toaster/>
