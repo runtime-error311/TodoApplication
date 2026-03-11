@@ -7,7 +7,7 @@ export const createTodo = async (req,res)=>{
     try{
         const {title,description,completed,endDate} = req.body;
         const {userId} = req;
-        // console.log(userId);
+
         if(!title || !description){
             return res.status(400).json({
                 message:"All inputs are required!"
