@@ -1,5 +1,6 @@
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { splitString } from "../constants/constant";
 
 function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
   return (
@@ -10,13 +11,13 @@ function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
       <div className="flex items-center gap-2">
         <div>
           <h3
-            className={`text-sm font-semibold ${todo.endDate.split("T")[0] < today ? "text-red-500" : ""}`}
+            className={`text-sm font-semibold ${todo.endDate.split(splitString)[0] < today ? "text-red-500" : ""}`}
           >
-            {todo.endDate.split("T")[0] < today
+            {todo.endDate.split(splitString)[0] < today
               ? "Overdue"
-              : todo.endDate.split("T")[0] === today
+              : todo.endDate.split(splitString)[0] === today
                 ? "Today"
-                : todo.endDate.split("T")[0]}
+                : todo.endDate.split(splitString)[0]}
           </h3>
           <div className=" flex justify-center items-center gap-2">
             <input
@@ -26,7 +27,7 @@ function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
               id={todo._id}
             />
             <label htmlFor={todo._id}
-              className={`font-bold truncate max-w-[150px] md:max-w-[250px] ${
+              className={`font-bold truncate max-w-[100px] md:max-w-[100px] ${
                 todo.completed ? "line-through opacity-60" : ""
               }`}
             >
@@ -44,13 +45,8 @@ function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
       </p>
 
       <div className="flex gap-3 justify-end">
-        <button onClick={() => openEdit(todo)}>
-          <MdEdit size={20} className="cursor-pointer" />
-        </button>
-
-        <button onClick={() => handleDelete(todo._id, todo.endDate)}>
-          <RiDeleteBin6Fill size={20} className="cursor-pointer" />
-        </button>
+          <MdEdit onClick={() => openEdit(todo)} size={20} className="cursor-pointer" />
+          <RiDeleteBin6Fill onClick={() => handleDelete(todo._id, todo.endDate)} size={20} className="cursor-pointer" />
       </div>
     </div>
   );

@@ -95,6 +95,12 @@ export const allUserTodos = async (req,res)=>{
 export const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
+    const validation = validationTodo(req.body);
+    if(validation!="Valid Inputs!"){
+        return res.status(400).json({
+            message:validation
+        })
+    }
     const updatedTodo = await Todo.findOneAndUpdate(
       { _id: id, user: req.userId },
       { $set: req.body },

@@ -1,38 +1,35 @@
 import { useState } from "react";
+import { emptyString, mode, splitString, today } from "../constants/constant";
 
-const today = new Date().toISOString().split("T")[0];
-
-export default function useTodoModal() {
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+const { add, edit } = mode;
+export default function useTodoModal({ isModalOpen, setIsModalOpen }) {
+  const [title, setTitle] = useState(emptyString);
+  const [description, setDescription] = useState(emptyString);
   const [endDate, setEndDate] = useState(today);
 
-  const [editTodo, setEditTodo] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mode, setMode] = useState("add");
+  const [editingTodo, setEditingTodo] = useState(null);
+
+  const [screen, setScreen] = useState(add);
 
   const openAddModal = () => {
-
-    setMode("add");
-    setTitle("");
-    setDescription("");
+    setScreen(add);
+    setTitle(emptyString);
+    setDescription(emptyString);
     setEndDate(today);
-    setIsModalOpen(true);
+    setEditingTodo(null);
 
+    setIsModalOpen(true);
   };
 
   const openEdit = (todo) => {
-
-    setMode("edit");
-    setEditTodo(todo);
+    setScreen(edit);
+    setEditingTodo(todo);
 
     setTitle(todo.title);
     setDescription(todo.description);
-    setEndDate(todo.endDate.split("T")[0]);
+    setEndDate(todo.endDate.split(splitString)[0]);
 
     setIsModalOpen(true);
-
   };
 
   return {
@@ -42,12 +39,11 @@ export default function useTodoModal() {
     setTitle,
     setDescription,
     setEndDate,
-    editTodo,
+    editingTodo,
     isModalOpen,
     setIsModalOpen,
-    mode,
+    screen,
     openAddModal,
-    openEdit
+    openEdit,
   };
-
 }

@@ -1,32 +1,15 @@
 import { useContext } from "react";
-import { useState } from "react";
 import UserContext from "../context/userContext";
-import axios from "axios";
-import toast from "react-hot-toast";
 import ClipLoader from "react-spinners/ClipLoader";
+import useAuth from "../hooks/useAuth";
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+
 function Navbar() {
-  const { user, setUser } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
-  const handleLogout = async () => {
-    setLoading(true);
-    try {
-      const result = await axios.get(VITE_API_URL + "auth/logout", {
-        withCredentials: true,
-      });
-      setUser(null);
-      toast.success(result?.data?.message);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-      toast.error(err?.response?.data?.message);
-    }
-  };
+  const { user } = useContext(UserContext);
+  const {loading,handleLogout} = useAuth();
   return (
-    <nav className="w-full max-h-[20%]  rounded-t-lg shadow-lg">
-      <div className="max-w-6xl mx-auto flex justify-between items-center h-16 px-6">
+    <nav className="w-full rounded-t-lg shadow-lg sticky top-0 bg-purple-200 z-10">
+      <div className="max-w-6xl mx-auto flex justify-between items-center h-16 px-6 ">
         <h2 className="text-xl font-bold text-black">Todo App</h2>
 
         <div className="flex items-center gap-4">

@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import AddEditTodo from "../components/AddEditTodo";
 import TodoList from "../components/TodoList";
+
 import useTodos from "../hooks/useTodos";
+import useTodoModal from "../hooks/useTodoModal";
 
-const today = new Date().toISOString().split("T")[0];
+import { mode, today } from "../constants/constant";
 
+const {add} = mode;
 function Dashboard() {
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     overdue,
     todayTodos,
@@ -16,95 +19,88 @@ function Dashboard() {
     addTodo,
     removeTodo,
     toggleComplete,
-    editTodo
-  } = useTodos();
+    updateTodo
+  } = useTodos({isModalOpen, setIsModalOpen});
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [endDate, setEndDate] = useState(today);
-
-  const [editItem, setEditItem] = useState(null);
-  const [mode, setMode] = useState("add");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    title,
+    description,
+    endDate,
+    setTitle,
+    setDescription,
+    setEndDate,
+    editingTodo,
+    screen,
+    openAddModal,
+    openEdit
+  } = useTodoModal({isModalOpen, setIsModalOpen});
 
   useEffect(() => {
     fetchTodos();
   }, []);
 
-  const openAddModal = () => {
+  const handleSubmit = async() => {
+    let success;
+    if (screen === add) {
 
-    setMode("add");
-    setTitle("");
-    setDescription("");
-    setEndDate(today);
-    setIsModalOpen(true);
-
-  };
-
-  const openEdit = (todo) => {
-
-    setMode("edit");
-    setEditItem(todo);
-
-    setTitle(todo.title);
-    setDescription(todo.description);
-    setEndDate(todo.endDate.split("T")[0]);
-
-    setIsModalOpen(true);
-
-  };
-
-  const handleSubmit = () => {
-
-    if (mode === "add") {
-
-      addTodo({ title, description, endDate });
-
+      success =await addTodo({
+        title,
+        description,
+        endDate
+      });
+      
     } else {
-
-      editTodo(editItem._id, { title, description, endDate });
-
+      
+      success= await updateTodo(editingTodo._id, {
+        title,
+        description,
+        endDate
+      });
+      
     }
-
-    setIsModalOpen(false);
+    if(success) setIsModalOpen(false);
 
   };
 
   const todos = [...overdue, ...todayTodos, ...upcoming];
 
   return (
+    <div className=" min-h-screen flex justify-center items-start md:items-center p-4 ">
 
-    <div className="min-h-screen flex justify-center items-start md:items-center p-4">
-
-      <div className="w-full max-w-3xl md:h-[80vh] rounded-xl shadow-xl bg-linear-to-r from-purple-100 to-purple-300">
+      <div className="relative w-full max-w-3xl md:h-[80vh] rounded-xl shadow-xl bg-linear-to-r from-purple-100 to-purple-300 overflow-y-auto ">
 
         <Navbar />
 
-        <div className="relative p-4">
+        <div className="p-4 pb-20">
+          {todos.length === 0 ? (
+
+            <p className="text-center">
+              No Todo Found! Please try to add some todos.
+            </p>
+
+          ) : (
+
+            todos.map((todo) => (
+
+              <TodoList
+                key={todo._id}
+                todo={todo}
+                today={today}
+                toggleComplete={toggleComplete}
+                handleDelete={removeTodo}
+                openEdit={openEdit}
+              />
+
+            ))
+
+          )}
 
           <button
-            className="fixed md:absolute bottom-6 right-6 md:top-[60vh] md:right-10 w-14 h-14 rounded-full bg-red-400 text-white text-3xl flex items-center justify-center shadow-lg"
+            className= "absolute bottom-6 right-6 w-14 h-14 rounded-full bg-red-400 text-white flex items-center justify-center shadow-lg"
             onClick={openAddModal}
           >
             +
           </button>
-
-          {todos.length === 0
-            ? <p className="text-center">No Todo Found! Please try to add some todos.</p>
-            : todos.map(todo => (
-
-                <TodoList
-                  key={todo._id}
-                  todo={todo}
-                  today={today}
-                  toggleComplete={toggleComplete}
-                  handleDelete={removeTodo}
-                  openEdit={openEdit}
-                />
-
-              ))
-          }
-
         </div>
 
       </div>
@@ -112,7 +108,7 @@ function Dashboard() {
       {isModalOpen && (
 
         <AddEditTodo
-          mode={mode}
+          screen={screen}
           title={title}
           description={description}
           endDate={endDate}
@@ -126,9 +122,7 @@ function Dashboard() {
       )}
 
     </div>
-
   );
-
 }
 
 export default Dashboard;
