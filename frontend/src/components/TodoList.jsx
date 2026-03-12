@@ -6,7 +6,7 @@ function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
   return (
     <div
       key={todo._id}
-      className="bg-purple-100 flex flex-col md:flex-row md:items-center md:justify-between gap-2 border-2 rounded-xl m-2 p-3"
+      className="bg-purple-100 grid grid-cols-[200px_1fr_auto] items-center gap-2 border-2 rounded-xl m-2 p-3"
     >
       <div className="flex items-center gap-2">
         <div>
@@ -27,7 +27,7 @@ function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
               id={todo._id}
             />
             <label htmlFor={todo._id}
-              className={`font-bold truncate max-w-[100px] md:max-w-[100px] ${
+              className={`font-bold truncate max-w-[100px] md:max-w-[150px] ${
                 todo.completed ? "line-through opacity-60" : ""
               }`}
             >
