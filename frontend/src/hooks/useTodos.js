@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import * as todoService from "../services/todoServices";
 import { sortByDate, splitString, today } from "../constants/constant";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../context/userContext";
 
 
 
@@ -10,6 +12,8 @@ export default function useTodos() {
   const [overdue, setOverdue] = useState([]);
   const [todayTodos, setTodayTodos] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
+  const {setUser} = useContext(UserContext);
+  const navigate = useNavigate();
 
   const fetchTodos = async () => {
 
@@ -117,6 +121,12 @@ export default function useTodos() {
     } catch (err) {
 
       console.log(err?.response?.data?.message);
+      if(err?.response?.status===401){
+        navigate("/login");
+        setUser(null);
+        toast.error(err?.response?.data?.message);
+      }
+      
 
     }
 
@@ -151,6 +161,7 @@ export default function useTodos() {
     } catch (err) {
         
         console.log(err?.response?.data?.message);
+        
         toast.error(err?.response?.data?.message);
         return false;
 

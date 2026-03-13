@@ -33,12 +33,14 @@ export const registerUser = async(req,res)=>{
             name,email,password:hashPassowrd
         });
 
-        const token = jwt.sign({id:newUser._id},JWT_SECRET,{expiresIn:'7hr'});
+        const token = jwt.sign({id:newUser._id},JWT_SECRET,{expiresIn:'1h'});
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+        // req.session.userId = newUser._id;
+
 
 
         return res.status(200).json({
@@ -79,12 +81,13 @@ export const loginUser = async(req,res)=>{
 
         }
 
-        const token = jwt.sign({id:user._id},JWT_SECRET,{expiresIn:'7hr'});
+        const token = jwt.sign({id:user._id},JWT_SECRET,{expiresIn:'1h'});
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+        // req.session.userId = user._id;
 
 
         return res.status(200).json({
@@ -122,6 +125,7 @@ export const logoutUser = async(req,res)=>{
 export const userCheck = async(req,res)=>{
     try{
         const {userId} = req
+        // const {userId} = req.session;
         if(!userId){
             return res.status(401).json({
                 message:"Unauthorized user!"

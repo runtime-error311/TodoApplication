@@ -36,7 +36,12 @@ function Dashboard() {
   } = useTodoModal({isModalOpen, setIsModalOpen});
 
   useEffect(() => {
-    fetchTodos();
+    // const interval = setInterval(()=>{
+      // console.log("hello")
+      fetchTodos()
+
+    // },[10000])
+    // return ()=>clearInterval(interval)
   }, []);
 
   const handleSubmit = async() => {

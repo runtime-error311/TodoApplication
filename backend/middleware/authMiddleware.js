@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import User from "../model/user.js";
 dotenv.config();
 
 
@@ -18,6 +19,24 @@ const authMiddleware = async(req,res,next)=>{
         next();
     }
     catch(err){
+        return res.status(401).json({
+            message:"Invalid or expired token"
+        })
+    }
+}
+
+export const sessionAuthMiddleware = async(req,res)=>{
+    try{
+        const {userId} = req.session;
+        if(!userId){
+            return res.status(401).json({
+                message:"Unauthorized User!"
+            })
+        }
+        next();
+    }
+    catch(err){
+        
         return res.status(401).json({
             message:"Invalid or expired token"
         })

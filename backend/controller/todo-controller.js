@@ -7,6 +7,7 @@ export const createTodo = async (req,res)=>{
     try{
         const {title,description,completed,endDate} = req.body;
         const {userId} = req;
+        // const {userId} = req.session;
 
         if(!title || !description){
             return res.status(400).json({
@@ -60,6 +61,7 @@ export const singleTodo = async (req,res)=>{
 export const allUserTodos = async (req,res)=>{
     try{
         const {userId} = req;
+        // const {userId} = req.session;
 
 
         const today = new Date();
@@ -95,6 +97,8 @@ export const allUserTodos = async (req,res)=>{
 export const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
+    // const {userId} = req.session;
+    const {userId} = req;
     const validation = validationTodo(req.body);
     if(validation!="Valid Inputs!"){
         return res.status(400).json({
@@ -102,7 +106,7 @@ export const updateTodo = async (req, res) => {
         })
     }
     const updatedTodo = await Todo.findOneAndUpdate(
-      { _id: id, user: req.userId },
+      { _id: id, user: userId },
       { $set: req.body },
       { new: true }
     );
@@ -128,6 +132,7 @@ export const updateTodo = async (req, res) => {
 export const deleteTodo = async (req,res)=>{
     try{
         const {userId} = req;
+        // const {userId} = req.session;
         const {id} = req.params;
         await Todo.findOneAndDelete({_id:id,user:userId});
         if(!deleteTodo) {
