@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import AddEditTodo from "../components/AddEditTodo";
 import TodoList from "../components/TodoList";
@@ -7,10 +7,10 @@ import useTodos from "../hooks/useTodos";
 import useTodoModal from "../hooks/useTodoModal";
 
 import { mode, today } from "../constants/constant";
+import { useMemo } from "react";
 
-const {add} = mode;
+const { add } = mode;
 function Dashboard() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     overdue,
     todayTodos,
@@ -19,8 +19,8 @@ function Dashboard() {
     addTodo,
     removeTodo,
     toggleComplete,
-    updateTodo
-  } = useTodos({isModalOpen, setIsModalOpen});
+    updateTodo,
+  } = useTodos();
 
   const {
     title,
@@ -32,61 +32,55 @@ function Dashboard() {
     editingTodo,
     screen,
     openAddModal,
-    openEdit
-  } = useTodoModal({isModalOpen, setIsModalOpen});
+    openEdit,
+    isModalOpen,
+    setIsModalOpen,
+  } = useTodoModal();
 
   useEffect(() => {
-    // const interval = setInterval(()=>{
-      // console.log("hello")
-      fetchTodos()
+    const loadTodos = async () => {
+      await fetchTodos();
+    };
 
-    // },[10000])
-    // return ()=>clearInterval(interval)
+    // const interval = setInterval(() => {
+      loadTodos();
+    // }, [10000]);
+    // return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     let success;
+
     if (screen === add) {
-
-      success =await addTodo({
-        title,
-        description,
-        endDate
-      });
-      
+      success = await addTodo({ title, description, endDate });
     } else {
-      
-      success= await updateTodo(editingTodo._id, {
+      success = await updateTodo(editingTodo._id, {
         title,
         description,
-        endDate
+        endDate,
       });
-      
     }
-    if(success) setIsModalOpen(false);
 
+    if (success) setIsModalOpen(false);
   };
 
-  const todos = [...overdue, ...todayTodos, ...upcoming];
+  const todos = useMemo(
+    () => [...overdue, ...todayTodos, ...upcoming],
+    [overdue, todayTodos, upcoming],
+  );
 
   return (
     <div className=" min-h-screen flex justify-center items-start md:items-center p-4 ">
-
       <div className="relative w-full max-w-3xl md:h-[80vh] rounded-xl shadow-xl bg-linear-to-r from-purple-100 to-purple-300 overflow-y-auto ">
-
         <Navbar />
 
         <div className="p-4 pb-20">
           {todos.length === 0 ? (
-
             <p className="text-center">
               No Todo Found! Please try to add some todos.
             </p>
-
           ) : (
-
             todos.map((todo) => (
-
               <TodoList
                 key={todo._id}
                 todo={todo}
@@ -95,23 +89,20 @@ function Dashboard() {
                 handleDelete={removeTodo}
                 openEdit={openEdit}
               />
-
             ))
-
           )}
 
           <button
-            className= "absolute bottom-6 right-6 w-14 h-14 rounded-full bg-red-400 text-white flex items-center justify-center shadow-lg"
+            type="button"
+            className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-red-400 text-white flex items-center justify-center shadow-lg"
             onClick={openAddModal}
           >
             +
           </button>
         </div>
-
       </div>
 
       {isModalOpen && (
-
         <AddEditTodo
           screen={screen}
           title={title}
@@ -123,9 +114,7 @@ function Dashboard() {
           setIsModalOpen={setIsModalOpen}
           handleSubmit={handleSubmit}
         />
-
       )}
-
     </div>
   );
 }

@@ -11,6 +11,6 @@ const startAgendaJob = async ()=>{
     console.log("Agenda job scheduler started!");
 
 	await agenda.every('* * * * * *', 'delete old todos');
-    console.log("lkajsdfkl")
+
 };
 export default startAgendaJob;

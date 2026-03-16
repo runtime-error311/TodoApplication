@@ -27,7 +27,7 @@ export default function useTodos() {
 
     } catch (err) {
 
-      console.log(err?.response?.data?.message);
+      console.error(err?.response?.data?.message);
 
     }
 
@@ -54,7 +54,7 @@ export default function useTodos() {
       return true;
     } catch (err) {
         
-        console.log(err?.response?.data?.message);
+        console.error(err?.response?.data?.message);
         toast.error(err?.response?.data?.message);
         return false;
 
@@ -63,10 +63,8 @@ export default function useTodos() {
   };
 
   const removeTodo = async (id, endDate) => {
-    endDate =endDate.split(splitString)[0];
+    endDate =endDate?.split(splitString)?.[0];
     try {
-        console.log(endDate);
-        console.log(today);
       const res = await todoService.deleteTodo(id);
 
       if (endDate < today) {
@@ -78,7 +76,6 @@ export default function useTodos() {
       else {
         setTodayTodos(prev => prev.filter(t => t._id !== id));
       }
-      console.log(todayTodos)
       toast.success(res?.data?.message);
 
     } catch (err) {
@@ -94,7 +91,7 @@ export default function useTodos() {
 
     try {
 
-      const endDate = todo.endDate.split(splitString)[0];
+      const endDate = todo?.endDate?.split(splitString)?.[0];
 
       const res = await todoService.updateTodo(todo._id, {
         completed: !todo.completed
@@ -139,7 +136,7 @@ export default function useTodos() {
       const res = await todoService.updateTodo(id, data);
       const updated = res.data.data;
 
-      const updatedDate = updated.endDate.split(splitString)[0];
+      const updatedDate = updated?.endDate?.split(splitString)?.[0];
 
       setOverdue(prev => prev.filter(t => t._id !== updated._id));
       setTodayTodos(prev => prev.filter(t => t._id !== updated._id));

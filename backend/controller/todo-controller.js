@@ -14,10 +14,10 @@ export const createTodo = async (req,res)=>{
                 message:"All inputs are required!"
             })
         }
-        const validation = validationTodo(req.body);
-        if(validation!="Valid Inputs!"){
+        const notValid = validationTodo(req.body);
+        if(notValid){
             return res.status(400).json({
-                message:validation
+                message:notValid
             })
         }
 
@@ -99,10 +99,10 @@ export const updateTodo = async (req, res) => {
     const { id } = req.params;
     // const {userId} = req.session;
     const {userId} = req;
-    const validation = validationTodo(req.body);
-    if(validation!="Valid Inputs!"){
+    const notValid = validationTodo(req.body);
+    if(notValid){
         return res.status(400).json({
-            message:validation
+            message:notValid
         })
     }
     const updatedTodo = await Todo.findOneAndUpdate(

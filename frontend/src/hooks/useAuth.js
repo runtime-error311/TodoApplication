@@ -22,16 +22,19 @@ const useAuth = () => {
     setLoading(true);
     try {
       const result = await signup({ name, email, password });
-      toast.success(result.data.message);
-      setUser(result.data.data);
+      toast.success(result?.data?.message);
+      setUser(result?.data?.data);
       setLoading(false);
       navigate("/");
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.message || "Signup failed!");
+    }
+    finally{
       setLoading(false);
-      toast.error(err?.response?.data?.message);
     }
   };
+
 
   const handleLogout = async () => {
     setLoading(true);
@@ -42,8 +45,11 @@ const useAuth = () => {
       setLoading(false);
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.message || "Logout failed!");
+    }
+    finally{
       setLoading(false);
-      toast.error(err?.response?.data?.message);
+      
     }
   };
 
@@ -52,16 +58,17 @@ const useAuth = () => {
     setLoading(true);
     try {
       const result = await login({ email, password });
-
       toast.success(result?.data?.message);
       setUser(result?.data?.data);
       setLoading(false);
       navigate("/");
     } catch (err) {
       console.log(err);
-      setLoading(false);
       setUser(null);
-      toast.error(err?.response?.data?.message);
+      toast.error(err?.response?.data?.message || "Login Failed!");
+    }
+    finally{
+      setLoading(false);
     }
   };
   return { loading, handleLogin, handleLogout,handleSignUp,touched,setTouched,name,setName,email,setEmail,password,setPassword };

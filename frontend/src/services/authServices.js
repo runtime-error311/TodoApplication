@@ -1,15 +1,23 @@
 import axios from "axios";
-import { AUTH_API, VITE_API_URL } from "../constants/constant";
+import { AUTH_API } from "../constants/constant";
+import { EncryptionService } from "./encryptionServices";
 
+const api = axios.create({
+  baseURL: AUTH_API,
+  withCredentials: true,
+});
 
-export const signup = (data) =>
-  axios.post(AUTH_API + "signup", data, { withCredentials: true });
+export const signup = (data) => {
+  const encryptedData = EncryptionService(data);
+  return api.post("/signup",{data:encryptedData});
+}
 
-export const login = (data) =>
-  axios.post(AUTH_API + "login", data, { withCredentials: true });
+export const login = (data) =>{
+  const encryptedData = EncryptionService(data);
+  return api.post("/login",{data:encryptedData});
 
-export const logout = () =>
-  axios.get(AUTH_API + "logout", { withCredentials: true });
+} 
 
-export const me = () =>
-  axios.get(VITE_API_URL+'me',{withCredentials:true});
+export const logout = () => api.get("/logout");
+
+export const me = () => api.get("/me");

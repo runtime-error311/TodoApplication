@@ -1,21 +1,20 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import UserContext from "./userContext"; 
-import { useEffect } from "react";
 import { me } from "../services/authServices";
+import { useMemo } from "react";
 
 
 function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
-
+  const value = useMemo(()=>({user,setUser}),[user])
     useEffect(()=>{
       const checkAuth = async()=>{
         try{
           const result = await me();
-          console.log(result?.data?.data)
           setUser(result?.data?.data);
         }
         catch(err){
-          console.log(err);
+          console.error(err);
           setUser(null);  
         }
       }
@@ -26,7 +25,7 @@ function UserContextProvider({ children }) {
       
     },[])
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   );

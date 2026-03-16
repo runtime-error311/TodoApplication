@@ -13,14 +13,14 @@ function Navbar() {
         <h2 className="text-xl font-bold text-black">Todo App</h2>
 
         <div className="flex items-center gap-4">
-          <h3 className="text-gray-700 font-medium">Hi {user?.name}!</h3>
+          <h3 className="text-gray-700 font-medium">Hi {user?.name || "User"}!</h3>
 
           <button
             disabled={loading}
             onClick={handleLogout}
-            className="bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md font-medium flex items-center justify-center min-w-[90px]"
+            className="disabled:opacity-50 bg-red-400 hover:bg-red-600 text-white px-4 py-2 rounded-md font-medium flex items-center justify-center min-w-[90px]"
           >
-            {loading ? <ClipLoader size={25} color="white" /> : "Logout"}
+            {loading ? <ClipLoader size={20} color="white" /> : "Logout"}
           </button>
         </div>
       </div>

@@ -1,23 +1,24 @@
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { splitString } from "../constants/constant";
+import React from "react";
 
 function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
+  const endDate = todo?.endDate?.split(splitString)[0];
   return (
     <div
-      key={todo._id}
       className="bg-purple-100 grid grid-cols-[200px_1fr_auto] items-center gap-2 border-2 rounded-xl m-2 p-3"
     >
       <div className="flex items-center gap-2">
         <div>
           <h3
-            className={`text-sm font-semibold ${todo.endDate.split(splitString)[0] < today ? "text-red-500" : ""}`}
+            className={`text-sm font-semibold ${endDate < today ? "text-red-500" : ""}`}
           >
-            {todo.endDate.split(splitString)[0] < today
+            {endDate < today
               ? "Overdue"
-              : todo.endDate.split(splitString)[0] === today
+              : endDate === today
                 ? "Today"
-                : todo.endDate.split(splitString)[0]}
+                : endDate}
           </h3>
           <div className=" flex justify-center items-center gap-2">
             <input
@@ -45,11 +46,17 @@ function TodoList({ todo, today, toggleComplete, openEdit, handleDelete }) {
       </p>
 
       <div className="flex gap-3 justify-end">
-          <MdEdit onClick={() => openEdit(todo)} size={20} className="cursor-pointer" />
-          <RiDeleteBin6Fill onClick={() => handleDelete(todo._id, todo.endDate)} size={20} className="cursor-pointer" />
+        <button onClick={() => openEdit(todo)}  >
+          <MdEdit  size={20} className="cursor-pointer"/>
+
+        </button>
+        <button onClick={() => handleDelete(todo._id, todo.endDate)} >
+          <RiDeleteBin6Fill  size={20} className="cursor-pointer" />
+
+        </button>
       </div>
     </div>
   );
 }
 
-export default TodoList;
+export default React.memo(TodoList);

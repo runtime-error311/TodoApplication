@@ -1,13 +1,14 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import { validationSignUp } from "../config/validation.js";
 import User from "../model/user.js";
 import bcrypt from "bcryptjs";
-dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
-
+if(!JWT_SECRET){
+    throw new Error("JWT Secret is required!");
+}
 export const registerUser = async(req,res)=>{
+    
     try{
         const {name,email,password} = req.body;
         if(!name || !email || !password){
@@ -15,22 +16,22 @@ export const registerUser = async(req,res)=>{
                 message:"All fields required!"
             })
         }
-        const valid = validationSignUp(req.body);
-        if((valid)!="Valid Inputs!"){
+        const notValid = validationSignUp(req.body);
+        if(notValid){
             return res.status(400).json({
-                message:valid
+                message:notValid
             })
         }
 
-        const user = await User.findOne({email});
+        const user = await User.findOne({email}).select("-password");
         if(user){
             res.status(409).json({
                 message:"User already exists!"
             })
         }
-        const hashPassowrd = await bcrypt.hash(password,10);
+        const hashedPassowrd = await bcrypt.hash(password,10);
         const newUser = await User.create({
-            name,email,password:hashPassowrd
+            name,email,password:hashedPassowrd
         });
 
         const token = jwt.sign({id:newUser._id},JWT_SECRET,{expiresIn:'1h'});

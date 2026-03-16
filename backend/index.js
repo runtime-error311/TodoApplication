@@ -5,7 +5,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth-routes.js";
 import todoRouter from "./routes/todo-routes.js";
-import userRouter from "./routes/user-route.js";
 import startAgendaJob from "./schedulers/agendaScheduler.js";
 import errorMiddleware from "./middleware/errorMiddleware.js";
 import {startCronJobs} from "./schedulers/cronScheduler.js";
@@ -28,10 +27,14 @@ app.use(cookieParser());
 app.use(sessionMiddleware());
 app.use("/api/v1/auth",authRouter);
 app.use("/api/v1/todo",todoRouter);
-app.use("/api/v1",userRouter);
 
+app.use((req,res)=>{
+  res.status(404).json({
+    message:"Route not found"
+  })
+})
 
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
 app.listen(PORT,()=>{
     console.log("Server is now listening at ",PORT);
