@@ -91,9 +91,14 @@ Example:
 
 ```
 PORT=5000
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_secret
+MONGO_URI=your_secret
 CLIENT_URL=http://localhost:5173
+JWT_SECRET=your_secret
+SESSION_SECRET=your_secret
+NODE_ENV=development
+CRYPTO_SECRET=your_secret
+RUN_NODE_CRON=false
+RUN_AGENDA=false
 ```
 
 Create a `.env` file in the frontend folder.
@@ -101,6 +106,7 @@ Create a `.env` file in the frontend folder.
 Example:
 
 ```
-VITE_API_URL=http://localhost:5000/api/v1/
+VITE_API_URL=http://localhost:5000/api/v1
+VITE_CRYPTO_SECRET=your_secret
 ```
 ---
